@@ -4,7 +4,7 @@ import { IoEarth } from "react-icons/io5";
 export default function Navbar() {
   return (
     <>
-      <nav className="bg-gray-400 border-gray-200 dark:bg-gray-900">
+      <nav className="bg-gray-800 border-gray-200 ">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a
          

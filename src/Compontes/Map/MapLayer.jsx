@@ -169,7 +169,7 @@ export default function MapLayer() {
         ref={mapRef}
         style={{
           width: "100%",
-          height: "90.3vh",
+          height: "90.2vh",
           margin: 0,
           padding: 0,
         }}
