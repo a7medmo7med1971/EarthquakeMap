@@ -1,0 +1,14 @@
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  min-width: 250px;
+  z-index: 1000;
+  transform: translate(-50%, -100%);
+}
+.hidden {
+  display: none;
+}
