@@ -160,9 +160,14 @@ export default function MapLayer() {
           maxWidth: "400px",
         }}
       >
-        <DateRangePickerSimple
-          onRangeChange={(start, end) => getLayer(start, end)}
-        />
+<DateRangePickerSimple
+  onRangeChange={(start, end) => {
+    if (start && end) {
+      getLayer(start, end);
+    }
+  }}
+/>
+
       </div>
 
       <div

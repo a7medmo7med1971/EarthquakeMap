@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -8,28 +8,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export default function DateRangePickerSimple({ onRangeChange }) {
-  const [startDate, setStartDate] = useState(dayjs().startOf("month"));
-  const [endDate, setEndDate] = useState(dayjs());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
-  const handleStartChange = (newValue) => {
-    setStartDate(newValue);
-    if (onRangeChange && newValue && endDate) {
+  useEffect(() => {
+    if (onRangeChange && startDate && endDate) {
       onRangeChange(
-        newValue.format("YYYY-MM-DD"),
+        startDate.format("YYYY-MM-DD"),
         endDate.format("YYYY-MM-DD")
       );
     }
-  };
-
-  const handleEndChange = (newValue) => {
-    setEndDate(newValue);
-    if (onRangeChange && startDate && newValue) {
-      onRangeChange(
-        startDate.format("YYYY-MM-DD"),
-        newValue.format("YYYY-MM-DD")
-      );
-    }
-  };
+  }, [startDate, endDate, onRangeChange]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -58,20 +47,16 @@ export default function DateRangePickerSimple({ onRangeChange }) {
           <DatePicker
             label="From"
             value={startDate}
-            onChange={handleStartChange}
+            onChange={setStartDate}
             renderInput={(params) => <TextField {...params} fullWidth />}
           />
           <DatePicker
             label="To"
             value={endDate}
-            onChange={handleEndChange}
+            onChange={setEndDate}
             renderInput={(params) => <TextField {...params} fullWidth />}
           />
         </Box>
-
-        {/* <Typography mt={3} textAlign="center">
-          من: <strong>{startDate.format('YYYY-MM-DD')}</strong> &nbsp; إلى: <strong>{endDate.format('YYYY-MM-DD')}</strong>
-        </Typography> */}
       </Box>
     </LocalizationProvider>
   );
