@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef,useState } from "react";
 import "ol/ol.css";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
@@ -145,6 +145,8 @@ export default function MapLayer() {
 
     return () => map.setTarget(null);
   }, []);
+
+
 
   return (
     <div>

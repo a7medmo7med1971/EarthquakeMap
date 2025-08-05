@@ -6,19 +6,34 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Swal from "sweetalert2";
 
 export default function DateRangePickerSimple({ onRangeChange }) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+
   useEffect(() => {
-    if (onRangeChange && startDate && endDate) {
+  if (startDate && endDate) {
+    const today = dayjs(); // تاريخ النهاردة
+    if (endDate.isAfter(today)) {
+      Swal.fire({
+  icon: "error",
+  title: "Oops...",
+  text: "The end date cannot be in the future",
+  
+});
+      return; // ميكملش ولا يشغل onRangeChange
+    }
+
+    if (onRangeChange) {
       onRangeChange(
         startDate.format("YYYY-MM-DD"),
         endDate.format("YYYY-MM-DD")
       );
     }
-  }, [startDate, endDate, onRangeChange]);
+  }
+}, [startDate, endDate, onRangeChange]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
