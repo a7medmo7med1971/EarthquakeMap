@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "ol/ol.css";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
@@ -22,7 +22,26 @@ export default function MapLayer() {
   const overlayRef = useRef();
 
   
-  async function getLayer(start, end) {
+ async function getLayer(start, end) {
+  let timerInterval;
+
+  Swal.fire({
+    title: "Loading...",
+    html: "earthquake data... <b></b>",
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading();
+      const timer = Swal.getPopup().querySelector("b");
+      timerInterval = setInterval(() => {
+        const left = Swal.getTimerLeft();
+        if (left && timer) timer.textContent = `${left}`;
+      }, 100);
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
+    },
+  });
+
   try {
     const res = await axios.get(
       `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${start}&endtime=${end}&minmagnitude=5`
@@ -30,7 +49,6 @@ export default function MapLayer() {
 
     const geojsonData = res.data;
 
-    // احذف الطبقة القديمة
     if (vectorLayerRef.current) {
       mapObjectRef.current.removeLayer(vectorLayerRef.current);
     }
@@ -58,7 +76,9 @@ export default function MapLayer() {
     vectorLayerRef.current = vectorLayer;
     mapObjectRef.current.addLayer(vectorLayer);
 
-    //  عرض تنبيه بعد نجاح تحميل البيانات
+    Swal.close(); // قفل التنبيه بعد التحميل
+
+    // تنبيه نجاح
     Swal.fire({
       position: "center",
       icon: "success",
@@ -69,15 +89,15 @@ export default function MapLayer() {
 
   } catch (err) {
     console.error("خطأ في جلب بيانات الزلازل:", err);
-
-    //  لو في خطأ، اظهر تنبيه خطأ
+    Swal.close(); // قفل التنبيه لو فيه خطأ
     Swal.fire({
       icon: "error",
-      title: "Failed to load ",
+      title: "Failed to load",
       text: "Failed to load earthquake data",
     });
   }
 }
+
 
 
   useEffect(() => {

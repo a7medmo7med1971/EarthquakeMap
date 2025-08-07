@@ -32,9 +32,7 @@ function App() {
       </Online>
 
       <Offline>
-        <div style={{ textAlign: 'center', padding: '20px' }}>
-          <h2>You are offline</h2>
-        </div>
+
       </Offline>
     </>
   );
